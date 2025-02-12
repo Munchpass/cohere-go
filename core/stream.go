@@ -73,6 +73,16 @@ func (s Stream[T]) Recv() (T, error) {
 	return value, nil
 }
 
+// Recv reads a message from the stream, returning io.EOF when
+// all the messages have been read.
+func (s Stream[T]) RecvRaw() ([]byte, error) {
+	bytes, err := s.reader.ReadFromStream()
+	if err != nil {
+		return nil, err
+	}
+	return bytes, nil
+}
+
 // Close closes the Stream.
 func (s Stream[T]) Close() error {
 	return s.closer.Close()
